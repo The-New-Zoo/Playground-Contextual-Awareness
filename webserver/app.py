@@ -1,4 +1,4 @@
-from flask import Flask, render_template_string, request
+from flask import Flask, render_template_string
 import requests
 
 app = Flask(__name__)
@@ -6,46 +6,46 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return """
-    <h1>Community Space</h1>
+    <h1>Simple Blog</h1>
     <ul>
-      <li><a href="/members">Member List</a></li>
-      <li><a href="/articles">Articles</a></li>
+      <li><a href="/users">Users</a></li>
+      <li><a href="/entries">Blog Entries</a></li>
     </ul>
     """
 
-@app.route('/members')
-def members():
+@app.route('/users')
+def users():
     sql = "SELECT * FROM users;"
     r = requests.get(f'http://dataservice:5000/query', params={'sql': sql})
-    members = r.json()
+    users = r.json()
     return render_template_string("""
-        <h2>Our Members</h2>
+        <h2>Users</h2>
         <ul>
-        {% for m in members %}
-            <li>{{ m[0] }} - {{ m[1] }}</li>
+        {% for user in users %}
+            <li>{{ user[0] }} - {{ user[1] }}</li>
         {% endfor %}
         </ul>
-        <a href="/">Main Menu</a>
-    """, members=members)
+        <a href="/">Back</a>
+    """, users=users)
 
-@app.route('/articles')
-def articles():
+@app.route('/entries')
+def entries():
     sql = """
         SELECT entries.title, entries.content, users.name 
         FROM entries JOIN users ON entries.user_id = users.id;
     """
     r = requests.get(f'http://dataservice:5000/query', params={'sql': sql})
-    articles = r.json()
+    entries = r.json()
     return render_template_string("""
-        <h2>Latest Articles</h2>
-        {% for title, content, author in articles %}
+        <h2>Blog Entries</h2>
+        {% for title, content, author in entries %}
           <div style="margin-bottom:20px;">
-            <h3>{{ title }} <small>written by {{ author }}</small></h3>
-            <div>{{ content|safe }}</div>
+            <h3>{{ title }} <small>by {{ author }}</small></h3>
+            <p>{{ content }}</p>
           </div>
         {% endfor %}
-        <a href="/">Main Menu</a>
-    """, articles=articles)
+        <a href="/">Back</a>
+    """, entries=entries)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

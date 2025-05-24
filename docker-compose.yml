@@ -6,20 +6,27 @@ services:
     volumes:
       - dbdata:/data
     networks:
-      - backend
-    expose:
-      - "5000"
+      - backstage
 
   webserver:
     build: ./webserver
     ports:
-      - "8080:5000"
+      - "8888:5000"
     networks:
-      - backend
+      - public
+      - backstage
+    expose:
+      - "5000"
 
 volumes:
   dbdata:
 
 networks:
-  backend:
+  public:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.6.0.0/16
+         gateway: 10.6.0.1
+  backstage:
     internal: true
