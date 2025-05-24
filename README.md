@@ -113,42 +113,6 @@ To remove all data and rebuild:
 docker-compose down -v
 docker-compose up --build
 ```
-
----
-
-## 🛠 Dockerfile Overview
-
-### `dataservice/Dockerfile`
-
-```dockerfile
-FROM python:3.11-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-COPY app.py .
-CMD ["python", "app.py"]
-```
-
-### `webserver/Dockerfile`
-
-```dockerfile
-FROM python:3.11-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-COPY app.py .
-CMD ["python", "app.py"]
-```
-
----
-
-## 📄 Tech Stack
-
-- Python 3.11
-- Flask
-- SQLite
-- Docker + Docker Compose
-
 ---
 
 ## 🛠 Troubleshooting
