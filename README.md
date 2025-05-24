@@ -28,7 +28,6 @@ It includes:
 Context-aware agent should be able to easily pick up both XSS in the webserver and SQLi in dataservice BUT it should clearly understand that with current configuration of docker compose dataservice WILL NOT BE AVAILABLE FROM THE OUTSIDE and so should prioritise this finding LOW on Exploitability Likelihood metric and should describe why that is the case.
 
 ---
-```
 ## 🐳 Docker Setup
 
 ### 1. Build & Run
