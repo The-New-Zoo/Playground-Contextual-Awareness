@@ -29,9 +29,6 @@ Context-aware agent should be able to easily pick up both XSS in the webserver a
 
 ---
 ```
-
----
-
 ## 🐳 Docker Setup
 
 ### 1. Build & Run
