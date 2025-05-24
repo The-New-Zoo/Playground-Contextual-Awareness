@@ -41,7 +41,7 @@ docker-compose up --build
 Open your browser to:
 
 ```
-http://localhost:8080
+http://localhost:8888
 ```
 
 You’ll see a simple site with links to:
