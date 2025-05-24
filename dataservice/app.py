@@ -23,7 +23,7 @@ def init_db():
 
 @app.route('/query', methods=['GET'])
 def query():
-    sql = request.args.get('sql')  # VULNERABLE TO SQL INJECTION
+    sql = request.args.get('sql')
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
