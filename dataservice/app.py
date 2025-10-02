@@ -33,6 +33,17 @@ def query():
         return jsonify(rows)
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+    
+def query_handler(sql):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        conn.close()
+        return jsonify(rows)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
     init_db()

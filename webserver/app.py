@@ -1,5 +1,6 @@
 from flask import Flask, render_template_string, request
 import requests
+from ..dataservice.app import query_handler
 
 app = Flask(__name__)
 
@@ -16,7 +17,7 @@ def index():
 @app.route('/members')
 def members():
     sql = "SELECT * FROM users;"
-    r = requests.get(f'http://dataservice:5000/query', params={'sql': sql})
+    r = query_handler(sql)
     members = r.json()
     return render_template_string("""
         <h2>Our Members</h2>
