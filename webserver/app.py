@@ -1,6 +1,7 @@
 from flask import Flask, render_template_string, request
 import requests
 
+from logger import Logger
 from utils import calculate_something
 from ..dataservice.app import query_handler
 
@@ -39,6 +40,8 @@ def articles():
         FROM entries JOIN users ON entries.user_id = users.id;
     """
     r = requests.get(f'http://dataservice:5000/query', params={'sql': sql})
+    logger = Logger()
+    logger.log("Fetched articles from dataservice")
     articles = r.json()
     return render_template_string("""
         <h2>Latest Articles</h2>
