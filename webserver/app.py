@@ -1,5 +1,7 @@
 from flask import Flask, render_template_string, request
 import requests
+
+from utils import calculate_something
 from ..dataservice.app import query_handler
 
 app = Flask(__name__)
@@ -19,6 +21,7 @@ def members():
     sql = "SELECT * FROM users;"
     r = query_handler(sql)
     members = r.json()
+    number = calculate_something(2, 3)
     return render_template_string("""
         <h2>Our Members</h2>
         <ul>
