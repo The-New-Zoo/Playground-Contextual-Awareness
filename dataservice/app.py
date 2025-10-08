@@ -24,15 +24,7 @@ def init_db():
 @app.route('/query', methods=['GET'])
 def query():
     sql = request.args.get('sql')
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        cursor.execute(sql)
-        rows = cursor.fetchall()
-        conn.close()
-        return jsonify(rows)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
+    return query_handler(sql)
     
 def query_handler(sql):
     try:
