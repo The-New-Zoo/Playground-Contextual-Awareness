@@ -1,5 +1,6 @@
 from flask import Flask, render_template_string, request
 import requests
+from utils import calculate_something
 
 app = Flask(__name__)
 
@@ -21,6 +22,7 @@ def index():
 @app.route('/members')
 def members():
     sql = "SELECT * FROM users;"
+    smth = calculate_something(1,2)
     members = fetch_from_dataservice(sql)
     return render_template_string("""
         <h2>Our Members</h2>
