@@ -40,7 +40,7 @@ def articles():
         SELECT entries.title, entries.content, users.name 
         FROM entries JOIN users ON entries.user_id = users.id;
     """
-    articles = fetch_from_dataservice(sql)
+    articles = requests.get(f'http://dataservice:5000/query', params={'sql': sql}).json()
     return render_template_string("""
         <h2>Latest Articles</h2>
         {% for title, content, author in articles %}
