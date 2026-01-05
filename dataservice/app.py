@@ -24,6 +24,9 @@ def init_db():
 @app.route('/query', methods=['GET'])
 def query():
     sql = request.args.get('sql')
+    return query_handler(sql)
+    
+def query_handler(sql):
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()

@@ -1,7 +1,13 @@
 from flask import Flask, render_template_string, request
 import requests
+from utils import calculate_something
 
 app = Flask(__name__)
+
+def fetch_from_dataservice(sql):
+    """Utility function to fetch data from dataservice"""
+    r = requests.get(f'http://dataservice:5000/query', params={'sql': sql})
+    return r.json()
 
 @app.route('/')
 def index():
@@ -16,8 +22,8 @@ def index():
 @app.route('/members')
 def members():
     sql = "SELECT * FROM users;"
-    r = requests.get(f'http://dataservice:5000/query', params={'sql': sql})
-    members = r.json()
+    smth = calculate_something(1,2)
+    members = fetch_from_dataservice(sql)
     return render_template_string("""
         <h2>Our Members</h2>
         <ul>
@@ -34,8 +40,7 @@ def articles():
         SELECT entries.title, entries.content, users.name 
         FROM entries JOIN users ON entries.user_id = users.id;
     """
-    r = requests.get(f'http://dataservice:5000/query', params={'sql': sql})
-    articles = r.json()
+    articles = requests.get(f'http://dataservice:5000/query', params={'sql': sql}).json()
     return render_template_string("""
         <h2>Latest Articles</h2>
         {% for title, content, author in articles %}
